@@ -46,6 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('units', [UnitController::class, 'store'])->name('units.store');
     Route::patch('units/{unit}', [UnitController::class, 'update'])->name('units.update');
     Route::delete('units/{unit}', [UnitController::class, 'destroy'])->name('units.destroy');
+    Route::get('units/export', [UnitController::class, 'export'])->name('units.export');
+    Route::post('units/import', [UnitController::class, 'import'])->name('units.import');
 
     Route::get('nurses', [NurseController::class, 'index'])->name('nurses.index');
     Route::get('nurses/create', [NurseController::class, 'create'])->name('nurses.create');
@@ -53,11 +55,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('nurses/{nurse}/edit', [NurseController::class, 'edit'])->name('nurses.edit');
     Route::patch('nurses/{nurse}', [NurseController::class, 'update'])->name('nurses.update');
     Route::delete('nurses/{nurse}', [NurseController::class, 'destroy'])->name('nurses.destroy');
+    Route::get('nurses/export', [NurseController::class, 'export'])->name('nurses.export');
+    Route::post('nurses/import', [NurseController::class, 'import'])->name('nurses.import');
 
     Route::get('indicators', [IndicatorController::class, 'index'])->name('indicators.index');
     Route::post('indicators', [IndicatorController::class, 'store'])->name('indicators.store');
     Route::patch('indicators/{indicator}', [IndicatorController::class, 'update'])->name('indicators.update');
     Route::delete('indicators/{indicator}', [IndicatorController::class, 'destroy'])->name('indicators.destroy');
+    Route::get('indicators/export', [IndicatorController::class, 'export'])->name('indicators.export');
+    Route::post('indicators/import', [IndicatorController::class, 'import'])->name('indicators.import');
 });
 
 Route::middleware(['auth'])->group(function () {

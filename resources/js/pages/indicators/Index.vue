@@ -2,6 +2,7 @@
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import ImportExportButtons from '@/components/ImportExportButtons.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,6 +18,8 @@ import {
 import { fmt } from '@/lib/format';
 import {
     destroy as indicatorsDestroy,
+    exportMethod as indicatorsExport,
+    importMethod as indicatorsImport,
     index as indicatorsIndex,
     store as indicatorsStore,
     update as indicatorsUpdate,
@@ -147,6 +150,7 @@ function confirmDelete() {
                         </option>
                     </select>
                 </div>
+                <ImportExportButtons :export-url="indicatorsExport().url" :import-url="indicatorsImport().url" />
                 <Button @click="openCreate">Tambah Indikator</Button>
             </div>
         </div>

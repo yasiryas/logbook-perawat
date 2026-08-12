@@ -36,7 +36,7 @@ defineOptions({
     layout: {
         breadcrumbs: [
             {
-                title: 'Teams',
+                title: 'Tim',
                 href: index(),
             },
         ],
@@ -45,21 +45,21 @@ defineOptions({
 </script>
 
 <template>
-    <Head title="Teams" />
+    <Head title="Tim" />
 
-    <h1 class="sr-only">Teams</h1>
+    <h1 class="sr-only">Tim</h1>
 
     <div class="flex flex-col space-y-6">
         <div class="flex items-center justify-between">
             <Heading
                 variant="small"
-                title="Teams"
-                description="Manage your teams and team memberships"
+                title="Tim"
+                description="Kelola tim dan keanggotaan tim Anda"
             />
 
             <CreateTeamModal>
                 <Button data-test="teams-new-team-button">
-                    <Plus /> New team
+                    <Plus /> Tim baru
                 </Button>
             </CreateTeamModal>
         </div>
@@ -76,7 +76,7 @@ defineOptions({
                         <div class="flex items-center gap-2">
                             <span class="font-medium">{{ team.name }}</span>
                             <Badge v-if="team.isPersonal" variant="secondary">
-                                Personal
+                                Pribadi
                             </Badge>
                         </div>
                         <span class="text-sm text-muted-foreground">
@@ -99,7 +99,7 @@ defineOptions({
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent>
-                                <p>Leave team</p>
+                                <p>Keluar dari tim</p>
                             </TooltipContent>
                         </Tooltip>
 
@@ -117,7 +117,7 @@ defineOptions({
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent>
-                                <p>View team</p>
+                                <p>Lihat tim</p>
                             </TooltipContent>
                         </Tooltip>
 
@@ -135,7 +135,7 @@ defineOptions({
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent>
-                                <p>Edit team</p>
+                                <p>Edit tim</p>
                             </TooltipContent>
                         </Tooltip>
                     </div>
@@ -146,7 +146,7 @@ defineOptions({
                 v-if="teams.length === 0"
                 class="py-8 text-center text-muted-foreground"
             >
-                You don't belong to any teams yet.
+                Anda belum menjadi anggota tim mana pun.
             </p>
         </div>
     </div>

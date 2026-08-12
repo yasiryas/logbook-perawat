@@ -43,19 +43,19 @@ function handleOpenChange(value: boolean) {
                 @success="open = false"
             >
                 <DialogHeader>
-                    <DialogTitle>Create a new team</DialogTitle>
+                    <DialogTitle>Buat tim baru</DialogTitle>
                     <DialogDescription>
-                        Create a new team to collaborate with others.
+                        Buat tim baru untuk berkolaborasi dengan orang lain.
                     </DialogDescription>
                 </DialogHeader>
 
                 <div class="grid gap-2">
-                    <Label for="name">Team name</Label>
+                    <Label for="name">Nama tim</Label>
                     <Input
                         id="name"
                         name="name"
                         data-test="create-team-name"
-                        placeholder="My team"
+                        placeholder="Tim saya"
                         required
                     />
                     <InputError :message="errors.name" />
@@ -63,7 +63,7 @@ function handleOpenChange(value: boolean) {
 
                 <DialogFooter class="gap-2">
                     <DialogClose as-child>
-                        <Button variant="secondary"> Cancel </Button>
+                        <Button variant="secondary"> Batal </Button>
                     </DialogClose>
 
                     <Button
@@ -71,7 +71,7 @@ function handleOpenChange(value: boolean) {
                         data-test="create-team-submit"
                         :disabled="processing"
                     >
-                        Create team
+                        Buat tim
                     </Button>
                 </DialogFooter>
             </Form>

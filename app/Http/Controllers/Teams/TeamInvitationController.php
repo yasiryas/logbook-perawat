@@ -34,7 +34,7 @@ class TeamInvitationController extends Controller
         Notification::route('mail', $invitation->email)
             ->notify(new TeamInvitationNotification($invitation));
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Invitation sent.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Undangan terkirim.')]);
 
         return to_route('teams.edit', ['team' => $team->slug]);
     }
@@ -50,7 +50,7 @@ class TeamInvitationController extends Controller
 
         $invitation->delete();
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Invitation cancelled.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Undangan dibatalkan.')]);
 
         return to_route('teams.edit', ['team' => $team->slug]);
     }
@@ -75,7 +75,7 @@ class TeamInvitationController extends Controller
             $user->switchTeam($team);
         });
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Invitation accepted.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Undangan diterima.')]);
 
         return to_route('dashboard');
     }
@@ -87,7 +87,7 @@ class TeamInvitationController extends Controller
     {
         $invitation->delete();
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Invitation declined.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Undangan ditolak.')]);
 
         return to_route('dashboard');
     }

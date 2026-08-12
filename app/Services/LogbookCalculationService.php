@@ -10,6 +10,7 @@ use App\Models\Nurse;
 use App\Models\Unit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class LogbookCalculationService
 {
@@ -79,6 +80,7 @@ class LogbookCalculationService
      * Category achievement = average of its indicator achievements.
      * Total = sum of category achievements (match format kertas lama).
      *
+     * @param  array{working_days: int, days_in_month: int, categories: list<array{category: IndicatorCategory, indicators: list<array{indicator: Indicator, values: array<int, float>}>}>}|null  $grid
      * @return array{working_days: int, categories: list<array{category: IndicatorCategory, weight_percent: int, indicators: list<array{indicator: Indicator, sum: float, filled_days: int, achievement: float}>, achievement: float}>, total: float}
      */
     public function monthlyRecap(Nurse $nurse, int $month, int $year, ?array $grid = null): array
@@ -137,13 +139,13 @@ class LogbookCalculationService
 
         $sums = [];
 
-        foreach (LogbookEntry::query()
+        foreach (DB::table('logbook_entries')
             ->where('nurse_id', $nurse->id)
             ->whereBetween('date', [
                 Carbon::create($year, 1)->startOfMonth()->toDateString(),
                 Carbon::create($year, 12)->endOfMonth()->toDateString(),
             ])
-            ->selectRaw("indicator_id, substr(date, 6, 2) as month, SUM(value) as total")
+            ->selectRaw('indicator_id, substr(date, 6, 2) as month, SUM(value) as total')
             ->groupBy('indicator_id', 'month')
             ->get() as $row) {
             $sums[$row->indicator_id.'-'.$row->month] = (float) $row->total;
@@ -177,6 +179,88 @@ class LogbookCalculationService
         }
 
         return $rows;
+    }
+
+    /**
+     * Weighted annual total score per nurse, computed in bulk to avoid N+1.
+     *
+     * Mirrors the live computation of assessmentRows: each indicator's
+     * achievement is the mean monthly achievement, multiplied by its category
+     * weight.
+     *
+     * @param  iterable<Nurse>  $nurses
+     * @return array<int, float> keyed by nurse id
+     */
+    public function annualScoresByNurses(iterable $nurses, int $year): array
+    {
+        $byNurse = [];
+
+        foreach ($nurses as $nurse) {
+            $byNurse[$nurse->id] = $nurse->unit_id;
+        }
+
+        if ($byNurse === []) {
+            return [];
+        }
+
+        $nurseIds = array_keys($byNurse);
+        $unitIds = array_values(array_unique(array_filter($byNurse)));
+
+        $indicators = Indicator::query()
+            ->where(fn ($query) => $query
+                ->whereNull('unit_id')
+                ->when($unitIds !== [], fn ($query) => $query->orWhereIn('unit_id', $unitIds)))
+            ->with('category')
+            ->get();
+
+        $start = Carbon::create($year, 1)->startOfMonth()->toDateString();
+        $end = Carbon::create($year, 12)->endOfMonth()->toDateString();
+
+        $sums = [];
+
+        foreach (DB::table('logbook_entries')
+            ->whereIn('nurse_id', $nurseIds)
+            ->whereBetween('date', [$start, $end])
+            ->selectRaw('nurse_id, indicator_id, SUBSTR(date, 6, 2) as month, SUM(value) as total')
+            ->groupBy('nurse_id', 'indicator_id', 'month')
+            ->get() as $row) {
+            $sums[$row->nurse_id.'-'.$row->indicator_id.'-'.$row->month] = (float) $row->total;
+        }
+
+        $workingDaysByMonth = [];
+
+        foreach (MonthlyConfig::query()
+            ->whereIn('nurse_id', $nurseIds)
+            ->where('year', $year)
+            ->get() as $config) {
+            $workingDaysByMonth[$config->nurse_id.'-'.$config->month] = (int) $config->working_days;
+        }
+
+        $scores = [];
+
+        foreach ($byNurse as $nurseId => $unitId) {
+            $score = 0.0;
+
+            foreach ($indicators as $indicator) {
+                if ($indicator->unit_id !== null && $indicator->unit_id !== $unitId) {
+                    continue;
+                }
+
+                $monthly = [];
+
+                for ($month = 1; $month <= 12; $month++) {
+                    $workingDays = $workingDaysByMonth[$nurseId.'-'.$month] ?? Carbon::create($year, $month)->daysInMonth;
+                    $monthly[] = $workingDays > 0 ? ($sums[$nurseId.'-'.$indicator->id.'-'.$month] ?? 0.0) / $workingDays : 0.0;
+                }
+
+                $achievement = array_sum($monthly) / 12;
+                $score += $achievement * $indicator->category->weightAsDecimal();
+            }
+
+            $scores[$nurseId] = $score;
+        }
+
+        return $scores;
     }
 
     /**

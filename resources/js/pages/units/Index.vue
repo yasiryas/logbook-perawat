@@ -2,6 +2,7 @@
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import ImportExportButtons from '@/components/ImportExportButtons.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,6 +17,8 @@ import {
 } from '@/components/ui/dialog';
 import {
     destroy as unitsDestroy,
+    exportMethod as unitsExport,
+    importMethod as unitsImport,
     index as unitsIndex,
     store as unitsStore,
     update as unitsUpdate,
@@ -90,6 +93,7 @@ function confirmDelete() {
                 <h1 class="text-xl font-semibold tracking-tight">Master Unit</h1>
                 <p class="text-sm text-muted-foreground">Manajemen ruang / unit kerja</p>
             </div>
+            <ImportExportButtons :export-url="unitsExport().url" :import-url="unitsImport().url" />
             <Button @click="openCreate">Tambah Unit</Button>
         </div>
 

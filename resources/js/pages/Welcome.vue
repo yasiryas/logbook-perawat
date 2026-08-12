@@ -42,7 +42,7 @@ const dashboardUrl = computed(() =>
                 <nav class="flex items-center gap-2">
                     <template v-if="user">
                         <Button as-child>
-                            <Link :href="dashboardUrl">Buka Dashboard</Link>
+                            <Link :href="dashboardUrl">Buka Dasbor</Link>
                         </Button>
                     </template>
                     <template v-else>
@@ -79,7 +79,7 @@ const dashboardUrl = computed(() =>
                     <div class="mt-6 flex flex-wrap gap-3">
                         <Button size="lg" as-child>
                             <Link :href="user ? dashboardUrl : login().url">
-                                {{ user ? 'Buka Dashboard' : 'Mulai Sekarang' }}
+                                {{ user ? 'Buka Dasbor' : 'Mulai Sekarang' }}
                             </Link>
                         </Button>
                         <Button size="lg" variant="outline" as-child>

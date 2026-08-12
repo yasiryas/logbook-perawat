@@ -39,7 +39,7 @@ defineOptions({
     layout: (props: { currentTeam?: Team | null }) => ({
         breadcrumbs: [
             {
-                title: 'Dashboard',
+                title: 'Dasbor',
                 href: props.currentTeam ? dashboard(props.currentTeam.slug) : '/',
             },
         ],
@@ -160,7 +160,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Dasbor" />
 
     <PendingInvitationsModal
         v-if="pendingInvitations && pendingInvitations.length > 0"
@@ -170,7 +170,7 @@ onBeforeUnmount(() => {
     <div class="flex flex-col space-y-6">
         <div class="flex flex-wrap items-end justify-between gap-4">
             <div>
-                <h1 class="text-xl font-semibold tracking-tight">Dashboard Rekap</h1>
+                <h1 class="text-xl font-semibold tracking-tight">Dasbor Rekap</h1>
                 <p class="text-sm text-muted-foreground">
                     {{
                         state.nurse

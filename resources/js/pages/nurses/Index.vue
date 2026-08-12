@@ -2,6 +2,7 @@
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import ImportExportButtons from '@/components/ImportExportButtons.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,6 +17,8 @@ import {
 } from '@/components/ui/dialog';
 import {
     destroy as nursesDestroy,
+    exportMethod as nursesExport,
+    importMethod as nursesImport,
     index as nursesIndex,
     store as nursesStore,
     update as nursesUpdate,
@@ -132,6 +135,7 @@ function confirmDelete() {
                         </option>
                     </select>
                 </div>
+                <ImportExportButtons :export-url="nursesExport().url" :import-url="nursesImport().url" />
                 <Button @click="openCreate">Tambah Perawat</Button>
             </div>
         </div>

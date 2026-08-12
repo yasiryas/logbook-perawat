@@ -55,26 +55,27 @@ const handleOpenChange = (nextOpen: boolean) => {
                 @success="handleOpenChange(false)"
             >
                 <DialogHeader>
-                    <DialogTitle>Are you sure?</DialogTitle>
+                    <DialogTitle>Yakin?</DialogTitle>
                     <DialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete the team
-                        <strong>"{{ props.team.name }}"</strong>.
+                        Tindakan ini tidak dapat dibatalkan. Tim
+                        <strong>"{{ props.team.name }}"</strong> akan dihapus
+                        permanen.
                     </DialogDescription>
                 </DialogHeader>
 
                 <div class="space-y-4 py-4">
                     <div class="grid gap-2">
                         <Label for="confirmation-name">
-                            Type
-                            <strong>"{{ props.team.name }}"</strong> to confirm
+                            Ketik
+                            <strong>"{{ props.team.name }}"</strong> untuk
+                            mengonfirmasi
                         </Label>
                         <Input
                             id="confirmation-name"
                             name="name"
                             data-test="delete-team-name"
                             v-model="confirmationName"
-                            placeholder="Enter team name"
+                            placeholder="Masukkan nama tim"
                             autocomplete="off"
                         />
                         <InputError :message="errors.name" />
@@ -83,7 +84,7 @@ const handleOpenChange = (nextOpen: boolean) => {
 
                 <DialogFooter class="gap-2">
                     <DialogClose as-child>
-                        <Button variant="secondary"> Cancel </Button>
+                        <Button variant="secondary"> Batal </Button>
                     </DialogClose>
 
                     <Button
@@ -92,7 +93,7 @@ const handleOpenChange = (nextOpen: boolean) => {
                         type="submit"
                         :disabled="!canDeleteTeam || processing"
                     >
-                        Delete team
+                        Hapus tim
                     </Button>
                 </DialogFooter>
             </Form>

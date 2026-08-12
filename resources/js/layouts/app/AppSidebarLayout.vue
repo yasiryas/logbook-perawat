@@ -21,7 +21,11 @@ withDefaults(defineProps<Props>(), {
         <AppContent variant="sidebar" class="overflow-x-hidden">
             <AppSidebarHeader :breadcrumbs="breadcrumbs" />
             <div class="px-4 py-6 sm:px-6 lg:px-8">
-                <slot />
+                <Transition name="page" mode="out-in">
+                    <div :key="$page.url">
+                        <slot />
+                    </div>
+                </Transition>
             </div>
         </AppContent>
         <Toaster />

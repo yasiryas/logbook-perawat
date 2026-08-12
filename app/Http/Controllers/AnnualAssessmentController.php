@@ -26,31 +26,34 @@ class AnnualAssessmentController extends Controller
         $nurses = $this->visibleNurses()
             ->with(['unit', 'annualAssessments' => fn ($query) => $query->where('year', $year)])
             ->orderBy('name')
-            ->get()
-            ->map(function (Nurse $nurse) use ($year) {
-                $assessment = $nurse->annualAssessments->first();
-                $total = $assessment && $assessment->isFinal()
-                    ? $assessment->totalScore()
-                    : (float) array_sum(array_map(
-                        fn ($group) => array_sum(array_column($group['rows'], 'score')),
-                        $this->logbook->assessmentRows($nurse, $year)
-                    ));
+            ->get();
 
-                return [
-                    'id' => $nurse->id,
-                    'name' => $nurse->name,
-                    'nip' => $nurse->nip,
-                    'pk' => $nurse->pk,
-                    'unit' => $nurse->unit->name,
-                    'year' => $year,
-                    'status' => $assessment?->status->value ?? AssessmentStatus::Draft->value,
-                    'total' => round($total, 6),
-                ];
-            });
+        $draftScores = $this->logbook->annualScoresByNurses(
+            $nurses->reject(fn (Nurse $nurse) => $nurse->annualAssessments->first()?->isFinal() ?? false),
+            $year
+        );
+
+        $rows = $nurses->map(function (Nurse $nurse) use ($year, $draftScores) {
+            $assessment = $nurse->annualAssessments->first();
+            $total = $assessment && $assessment->isFinal()
+                ? $assessment->totalScore()
+                : (float) ($draftScores[$nurse->id] ?? 0.0);
+
+            return [
+                'id' => $nurse->id,
+                'name' => $nurse->name,
+                'nip' => $nurse->nip,
+                'pk' => $nurse->pk,
+                'unit' => $nurse->unit->name,
+                'year' => $year,
+                'status' => $assessment?->status->value ?? AssessmentStatus::Draft->value,
+                'total' => round($total, 6),
+            ];
+        });
 
         return Inertia::render('assessments/Index', [
             'year' => $year,
-            'nurses' => $nurses,
+            'nurses' => $rows,
         ]);
     }
 

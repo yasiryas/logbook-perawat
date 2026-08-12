@@ -16,15 +16,15 @@ import PasskeyVerify from '@/components/PasskeyVerify.vue';
 
 defineOptions({
     layout: {
-        title: 'Confirm password',
+        title: 'Konfirmasi kata sandi',
         description:
-            'This is a secure area of the application. Please confirm your password before continuing.',
+            'Ini adalah area aman aplikasi. Silakan konfirmasi kata sandi sebelum melanjutkan.',
     },
 });
 </script>
 
 <template>
-    <Head title="Confirm password" />
+    <Head title="Konfirmasi kata sandi" />
 
     <!-- @chisel-passkeys -->
     <PasskeyVerify
@@ -32,9 +32,9 @@ defineOptions({
             options: confirmOptions(),
             submit: confirmStore(),
         }"
-        label="Confirm with passkey"
-        loading-label="Confirming..."
-        separator="Or confirm with password"
+        label="Konfirmasi dengan passkey"
+        loading-label="Mengonfirmasi..."
+        separator="Atau konfirmasi dengan kata sandi"
     />
     <!-- @end-chisel-passkeys -->
 
@@ -45,7 +45,7 @@ defineOptions({
     >
         <div class="space-y-6">
             <div class="grid gap-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Kata sandi</Label>
                 <PasswordInput
                     id="password"
                     name="password"
@@ -65,7 +65,7 @@ defineOptions({
                     data-test="confirm-password-button"
                 >
                     <Spinner v-if="processing" />
-                    Confirm password
+                    Konfirmasi kata sandi
                 </Button>
             </div>
         </div>

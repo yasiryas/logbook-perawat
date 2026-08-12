@@ -48,7 +48,7 @@ const isManager = computed(() => role.value !== 'perawat');
 
 const mainNavItems = computed<NavItem[]>(() => [
     {
-        title: 'Dashboard',
+        title: 'Dasbor',
         href: dashboardUrl.value,
         icon: LayoutGrid,
     },

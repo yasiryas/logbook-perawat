@@ -5,7 +5,7 @@ import type { TeamInvitationContext } from '@/types';
 
 type Props = {
     invitation: TeamInvitationContext;
-    action: 'Log in' | 'Register';
+    action: 'Log in' | 'Register' | 'Masuk' | 'Daftar';
 };
 
 defineProps<Props>();
@@ -18,7 +18,8 @@ defineProps<Props>();
         >
             <Info class="size-4" />
             <AlertDescription class="text-blue-900 dark:text-blue-100">
-                {{ action }} to join the "{{ invitation.teamName }}" team.
+                {{ action }} untuk bergabung dengan tim
+                "{{ invitation.teamName }}".
             </AlertDescription>
         </Alert>
     </div>

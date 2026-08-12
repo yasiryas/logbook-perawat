@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="utf-8">
@@ -10,7 +10,7 @@
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid #333; padding: 3px 5px; text-align: center; }
         td.name, th.name { text-align: left; }
-        .cat { background: #dbe9e8; font-weight: bold; }
+        .cat { background: #d1fadf; font-weight: bold; }
         .total { background: #f1f5f9; font-weight: bold; }
         .ttd { text-align: center; }
         .ttd span { display: block; margin-bottom: 48px; }
