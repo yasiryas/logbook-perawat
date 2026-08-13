@@ -148,7 +148,7 @@ class LogbookCalculationService
             ->selectRaw('indicator_id, substr(date, 6, 2) as month, SUM(value) as total')
             ->groupBy('indicator_id', 'month')
             ->get() as $row) {
-            $sums[$row->indicator_id.'-'.$row->month] = (float) $row->total;
+            $sums[$row->indicator_id.'-'.(int) $row->month] = (float) $row->total;
         }
 
         $workingDaysByMonth = [];
@@ -224,7 +224,7 @@ class LogbookCalculationService
             ->selectRaw('nurse_id, indicator_id, SUBSTR(date, 6, 2) as month, SUM(value) as total')
             ->groupBy('nurse_id', 'indicator_id', 'month')
             ->get() as $row) {
-            $sums[$row->nurse_id.'-'.$row->indicator_id.'-'.$row->month] = (float) $row->total;
+            $sums[$row->nurse_id.'-'.$row->indicator_id.'-'.(int) $row->month] = (float) $row->total;
         }
 
         $workingDaysByMonth = [];

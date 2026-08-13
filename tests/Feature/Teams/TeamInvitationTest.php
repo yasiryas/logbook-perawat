@@ -57,7 +57,7 @@ class TeamInvitationTest extends TestCase
         $mail = (new TeamInvitationNotification($invitation))->toMail($invitedUser);
 
         $this->assertSame(route('login', ['invitation' => $invitation->code]), $mail->actionUrl);
-        $this->assertStringContainsString('dashboard', implode(' ', $mail->introLines));
+        $this->assertStringContainsString('dasbor', implode(' ', $mail->introLines));
     }
 
     public function test_invitation_email_for_unknown_users_uses_login_route()
@@ -76,7 +76,7 @@ class TeamInvitationTest extends TestCase
         $mail = (new TeamInvitationNotification($invitation))->toMail((object) []);
 
         $this->assertSame(route('login', ['invitation' => $invitation->code]), $mail->actionUrl);
-        $this->assertStringContainsString('log in', strtolower(implode(' ', $mail->introLines)));
+        $this->assertStringContainsString('masuk', strtolower(implode(' ', $mail->introLines)));
     }
 
     public function test_team_invitations_can_be_created_by_admins()
@@ -207,7 +207,7 @@ class TeamInvitationTest extends TestCase
             ->post(route('invitations.accept', $invitation));
 
         $response->assertRedirect(route('dashboard'));
-        $response->assertInertiaFlash('toast', ['type' => 'success', 'message' => 'Invitation accepted.']);
+        $response->assertInertiaFlash('toast', ['type' => 'success', 'message' => 'Undangan diterima.']);
 
         $this->assertTrue($invitedUser->fresh()->belongsToTeam($team));
         $this->assertNotNull($invitation->fresh()->accepted_at);

@@ -68,7 +68,7 @@ class User extends Authenticatable implements PasskeyUser
 
     public function role(): UserRole
     {
-        return $this->role;
+        return $this->role ?? UserRole::Perawat;
     }
 
     /**
